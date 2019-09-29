@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Queue.h"
+#include "Model.h"
 
 template <typename T>
 class Iterator
@@ -16,14 +16,15 @@ template <typename T>
 class QueueIterator : public Iterator<T> {
 public:
 	QueueIterator(Queue<T>& q);
-	virtual void First() override;
-	virtual void Next() override;
-	virtual bool IsDone() override;
-	virtual T& CurrentItem() override;
+	void First() override;
+	void Next() override;
+	bool IsDone() override;
+	T& CurrentItem() override;
 private:
 	Queue<T>& queue;
 	size_t pos = 0;
 };
+
 
 template <typename T>
 QueueIterator<T>::QueueIterator(Queue<T>& q) :

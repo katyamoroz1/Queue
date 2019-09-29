@@ -37,7 +37,7 @@ void View::Line(HDC hdc, int X0, int Y0, int X, int Y) {
 void View::ChangeListBox(HWND hDlg, const char* outBuff, int ID) {
 	SendDlgItemMessage(hDlg, ID, LB_INSERTSTRING, -1, (LPARAM)outBuff);
 }
-void View::DeleteFromList(HWND hDlg, int ID) {
-	SendDlgItemMessage(hDlg, ID, LB_DELETESTRING, 0, (LPARAM)NULL);
+void View::DeleteFromList(HWND hDlg, int ID, int number) {
+	SendDlgItemMessage(hDlg, ID, LB_DELETESTRING, number, (LPARAM)NULL);
 }
 

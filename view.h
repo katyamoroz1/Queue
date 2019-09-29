@@ -1,12 +1,9 @@
 #pragma once
-#include "5.h"
+#include "project.h"
 #include "stdafx.h"
 
 extern HINSTANCE hInst;
 INT_PTR CALLBACK	DlgMain(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK	DlgAdd(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK	DlgDel(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK	DlgGet(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK	DlgAbout(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 enum class DialogType {Set, Get, Del, About };
@@ -23,5 +20,5 @@ public:
 
 	void ChangeListBox(HWND nDlg, const char* outBuff, int ID);
 
-	void DeleteFromList(HWND hDlg, int ID);
+	void DeleteFromList(HWND hDlg, int ID, int number);
 };

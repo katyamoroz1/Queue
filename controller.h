@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "view.h"
-#include "Queue.h"
+#include "Model.h"
 #include "Iterator.h"
 #include "Visitor.h"
 
@@ -36,11 +36,11 @@ public:
 	}
 	char buff[100] = "";
 	std::string element;
-
+	VisitorSum<std::string> visitor;
 	void Main(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam, HFONT hFont) {
 		std::string str;
 		QueueIterator<std::string> it((Queue<std::string>&)*queue_);
-		VisitorSum<std::string> vs;
+		
 		switch (message)
 		{
 		case WM_COMMAND:
@@ -63,10 +63,10 @@ public:
 			case IDC_BUTTON3:
 				for (it.First(); !it.IsDone(); it.Next()) {
 					Element<std::string> element(it.CurrentItem());
-					element.accept(vs);
+					element.accept(visitor);
 				}
 				SendDlgItemMessage(hDlg, IDC_LIST3, LB_DELETESTRING, 0, (LPARAM)element.c_str());
-				SendDlgItemMessage(hDlg, IDC_LIST3, LB_ADDSTRING, 0, (LPARAM)std::to_string(queue_->Size() == 0 ? 0 : vs.result() / (double)queue_->Size()).c_str());
+				SendDlgItemMessage(hDlg, IDC_LIST3, LB_ADDSTRING, 0, (LPARAM)std::to_string(queue_->Size() == 0 ? 0 : visitor.result() / (double)queue_->Size()).c_str());
 				break;
 			case WM_DESTROY:
 				DeleteObject(hFont);
@@ -84,7 +84,6 @@ public:
 		GetDlgItemTextA(hDlg, IDC_EDIT1, buff, 100);
 		SetDlgItemTextA(hDlg, IDC_EDIT1, "");
 		if (std::string(buff) != "") {
-			/// исправить счетчик
 			model_->Add(std::string(buff));
 			view_.ChangeListBox(hDlg, buff, ID);
 		}
@@ -92,8 +91,10 @@ public:
 
 	void Del(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam, int ID, Model<T>* model_) {
 		if (model_->Size() != 0) {
-			model_->Delete(0);
-			view_.DeleteFromList(hDlg, ID);
+		    T& element =  model_->Accept(visitor);
+			//auto index = SendDlgItemMessage(hDlg, ID, LB_FINDSTRINGEXACT, -1, (LPARAM)element.c_str());
+			int index = model_->Find(element);
+			view_.DeleteFromList(hDlg, ID, index);
 		}
 	}
 

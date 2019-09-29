@@ -1,5 +1,5 @@
 #pragma once
-#include "Queue.h"
+#include "Model.h"
 
 template <typename T>
 class Model;
@@ -48,19 +48,21 @@ void VisitorSum<T>::visit(Element<T>& e) {
 
 template <typename T>
 T& VisitorSum<T>::VisitQueue(Model<T>& queue) {
-	return queue.Get(0);
+	T& element = queue.Get(0);
+	 queue.Delete(0);
+	 return element;
 }
 template <typename T>
 T& VisitorSum<T>::VisitHeap(Model<T>& heap) {
-	return heap.Get(0);
+	int index = rand() % heap.Size();
+	T& element = heap.Get(index);
+	heap.Delete(index);
+	return element;
 }
 
 template <typename T>
 Element<T>::Element(T& v) :
-	value_(v)
-{
-
-}
+	value_(v) {}
 
 template <typename T>
 void Element<T>::accept(Visitor<T>& v) {
